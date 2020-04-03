@@ -1,7 +1,9 @@
 import React, { Component } from 'react'
 import "./App.css"
 import Weather from './components/weather.component'
+import Form from './components/form.component'
 import 'bootstrap/dist/css/bootstrap.min.css'
+import './assest/a.jpg'
 
 
 //api.openweathermap.org/data/2.5/weather?q=London,uk
@@ -23,7 +25,7 @@ export default class App extends Component {
       description : "",
       error : false 
     };
-    this.getWeather();
+    
     this.weatherIcon = {
       Thunderstorm:"fa-poo-storm",
       Drizzle : "",
@@ -64,8 +66,12 @@ export default class App extends Component {
 
   }
 
-  getWeather = async ()=>{
-    const api_call = await fetch(`http://api.openweathermap.org/data/2.5/weather?q=London,uk&APPID=${API_KEY}`);
+  getWeather = async (e)=>{
+    e.preventDefault();
+    const city = e.target.elements.city.value;
+    const country = e.target.elements.country.value;
+    console.log(city + country);
+    const api_call = await fetch(`http://api.openweathermap.org/data/2.5/weather?q=${city},${country}&APPID=${API_KEY}`);
 
     const response = await api_call.json();
 
@@ -85,6 +91,7 @@ export default class App extends Component {
   render() {
     return (
       <div className="App">
+      <Form loadWeather={this.getWeather}/>
       <Weather 
       city={this.state.city} 
       country={this.state.country} 
